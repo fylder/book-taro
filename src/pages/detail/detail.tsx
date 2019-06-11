@@ -4,13 +4,13 @@ import { View, Text } from "@tarojs/components"
 import { AtButton } from "taro-ui"
 import { connect } from "@tarojs/redux"
 
-import { detail } from "../../actions/userAction"
+import { detail } from "../../actions/detailAction"
 
-import "./user.scss"
+import "./detail.scss"
 
 type PageStateProps = {
-  user: {
-    username: string
+  detail: {
+    info: string
   }
 }
 
@@ -24,13 +24,13 @@ type PageState = {}
 
 type IProps = PageStateProps & PageDispatchProps & PageOwnProps
 
-interface User {
+interface Detail {
   props: IProps
 }
 
 @connect(
-  ({ user }) => ({
-    user
+  ({ detail }) => ({
+    detail
   }),
   dispatch => ({
     detail() {
@@ -38,7 +38,7 @@ interface User {
     }
   })
 )
-class User extends Component {
+class Detail extends Component {
   /**
    * 指定config的类型声明为: Taro.Config
    *
@@ -81,4 +81,4 @@ class User extends Component {
 //
 // #endregion
 
-export default User as ComponentClass<PageOwnProps, PageState>
+export default Detail as ComponentClass<PageOwnProps, PageState>

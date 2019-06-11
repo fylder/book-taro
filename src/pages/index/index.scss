@@ -1,3 +1,21 @@
-.btn{
-    margin: 1rem;
+.btn {
+  margin: 1rem;
+}
+
+.swiper-lay {
+  height: 12rem;
+  width: 100%;
+
+  .swiper-item {
+
+    .swiper-img {
+      width: 100%;
+    }
+  }
+
+}
+
+.line {
+  height: 1px;
+  background: rgba(245, 245, 245, 0.8);
 }
