@@ -5,11 +5,11 @@ export const image_data = [
   },
   {
     image:
-      "http://b242.photo.store.qq.com/psb?/V13MxeJc3r8tVQ/6CC95nC37cpaDF8V3MPHjPW7iz8CNTzyRY3MtagfEnQ!/b/dPIAAAAAAAAA&bo=2AYABdgGAAURBzA!&rf=viewer_4"
+      "http://img5.mtime.cn/pi/2016/11/28/142338.99942641_1000X1000.jpg"
   },
   {
     image:
-      "http://b250.photo.store.qq.com/psb?/V13MxeJc2qpf92/rp0boIpP70mmZps7n1odb*c2B.FzvO1hhTAcvAylSbo!/b/dPoAAAAAAAAA&bo=CQewBAkHsAQFByQ!&rf=viewer_4"
+      "http://img5.mtime.cn/pi/2019/03/30/100155.92232373_1000X1000.jpg"
   }
 ]
 

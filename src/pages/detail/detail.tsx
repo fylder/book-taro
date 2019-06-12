@@ -1,24 +1,32 @@
 import { ComponentClass } from "react"
 import Taro, { Component, Config } from "@tarojs/taro"
-import { View, Text } from "@tarojs/components"
-import { AtButton } from "taro-ui"
+import { View, Image } from "@tarojs/components"
+import { AtButton, AtTag, AtToast } from "taro-ui"
 import { connect } from "@tarojs/redux"
-
-import { detail } from "../../actions/detailAction"
-
+import { detail, load } from "../../actions/detailAction"
+import anime_data from "./data"
 import "./detail.scss"
 
 type PageStateProps = {
   detail: {
+    id: number
     info: string
+  }
+  user: {
+    username: string
+  }
+  load: {
+    isLoading: boolean
   }
 }
 
 type PageDispatchProps = {
-  detail: () => void
+  handlerDetail: () => void
 }
 
-type PageOwnProps = {}
+type PageOwnProps = {
+  // dispatch(type: any): Promise<any>
+}
 
 type PageState = {}
 
@@ -28,17 +36,30 @@ interface Detail {
   props: IProps
 }
 
+interface ComponentProps {
+  /* declare your component's props here */
+}
+interface ComponentState {
+  id: number
+}
+
 @connect(
-  ({ detail }) => ({
-    detail
+  ({ detail, user, load }) => ({
+    detail,
+    user,
+    load
   }),
   dispatch => ({
-    detail() {
-      dispatch(detail("fylder"))
+    handlerDetail() {
+      dispatch(load(true))
+      setTimeout(() => {
+        dispatch(load(false))
+      }, 2000)
+      dispatch(detail(1, "fylder"))
     }
   })
 )
-class Detail extends Component {
+class Detail extends Component<ComponentProps, ComponentState> {
   /**
    * 指定config的类型声明为: Taro.Config
    *
@@ -47,11 +68,23 @@ class Detail extends Component {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
   config: Config = {
-    navigationBarTitleText: "user"
+    navigationBarTitleText: "detail"
   }
 
+  constructor(props, context) {
+    super(props, context)
+    this.state = { id: 0 }
+  }
   componentWillReceiveProps(nextProps) {
     console.log(this.props, nextProps)
+  }
+
+  componentWillMount() {
+    // console.log(this.$router.params) // 输出 { id: 2, type: 'test' }
+    const id = this.$router.params.id
+    this.setState({
+      id: id
+    })
   }
 
   componentWillUnmount() {}
@@ -61,14 +94,50 @@ class Detail extends Component {
   componentDidHide() {}
 
   render() {
+    const data = anime_data[this.state.id]
     return (
       <View className="index">
-        <AtButton className="btn" type="secondary" onClick={this.props.detail}>
-          get
-        </AtButton>
-        <View className="btn">
-          <Text>{this.props.user.username}</Text>
+        <View className="detail-content">
+          <View className="at-article ">
+            <View className="at-article__h1">{data.title}</View>
+            <View className="at-article__info">{data.time}</View>
+            <View className="at-article__info">
+              {data.tags.map((item, index) => {
+                return (
+                  <AtTag className="tag-item" size="small" key={index}>
+                    {item}
+                  </AtTag>
+                )
+              })}
+            </View>
+            <View className="at-article__content">
+              <View className="at-article__section">
+                <Image
+                  className="at-article__img"
+                  src={data.image}
+                  mode="widthFix"
+                />
+                <View className="at-article__h2">{this.props.detail.id}</View>
+                <View className="at-article__h3">{data.describe_title}</View>
+                <View className="at-article__p">{data.describe} </View>
+                <View className="at-article__p">
+                  {this.props.user.username}
+                </View>
+              </View>
+            </View>
+          </View>
         </View>
+        <View className="detail-footer">
+          <AtButton type="primary" full onClick={this.props.handlerDetail}>
+            get√
+          </AtButton>
+        </View>
+        <AtToast
+          isOpened={this.props.load.isLoading}
+          status="loading"
+          text="正在提交"
+          icon="{icon}"
+        />
       </View>
     )
   }

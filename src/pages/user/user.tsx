@@ -3,7 +3,6 @@ import Taro, { Component, Config } from "@tarojs/taro"
 import { View, Text } from "@tarojs/components"
 import { AtButton } from "taro-ui"
 import { connect } from "@tarojs/redux"
-
 import { detail } from "../../actions/userAction"
 
 import "./user.scss"
@@ -18,7 +17,9 @@ type PageDispatchProps = {
   detail: () => void
 }
 
-type PageOwnProps = {}
+type PageOwnProps = {
+  dispatch(type: any): Promise<any>
+}
 
 type PageState = {}
 
@@ -49,14 +50,27 @@ class User extends Component {
   config: Config = {
     navigationBarTitleText: "user"
   }
-
+  constructor(props, context) {
+    super(props, context)
+    this.state = { id: 0 }
+  }
   componentWillReceiveProps(nextProps) {
     console.log(this.props, nextProps)
   }
 
   componentWillUnmount() {}
 
-  componentDidShow() {}
+  componentDidShow() {
+    Taro.getUserInfo().then(result => {
+      const nickName = result.userInfo.nickName
+      this.props.dispatch(detail(nickName))
+      Taro.showToast({
+        title: nickName,
+        icon: "get√",
+        duration: 2000
+      })
+    })
+  }
 
   componentDidHide() {}
 

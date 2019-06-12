@@ -29,6 +29,7 @@ type PageDispatchProps = {
   asyncAdd: () => any
   user: () => void
   itemClick: () => void
+  qrClick: () => void
 }
 
 type PageOwnProps = {}
@@ -62,23 +63,18 @@ interface Index {
     },
     itemClick(item: object, index: number) {
       console.dir(item)
-      if (index == 0) {
-        Taro.navigateTo({
-          url: "/pages/user/user"
+      Taro.navigateTo({
+        url: "/pages/detail/detail?id=" + index
+      })
+    },
+    qrClick() {
+      Taro.scanCode().then(response => {
+        Taro.showToast({
+          title: response.result,
+          icon: "success",
+          duration: 2000
         })
-      } else if (index == 1) {
-        Taro.navigateTo({
-          url: "/pages/detail/detail"
-        })
-      } else if (index == 4) {
-        Taro.scanCode().then(response => {
-          Taro.showToast({
-            title: response.result,
-            icon: "success",
-            duration: 2000
-          })
-        })
-      }
+      })
     }
   })
 )
@@ -120,7 +116,11 @@ class Index extends Component {
           {image_data.map((item, index) => {
             return (
               <SwiperItem key={index} className="swiper-item">
-                <Image src={item.image} className="swiper-img" />
+                <Image
+                  src={item.image}
+                  className="swiper-img"
+                  mode="widthFix"
+                />
               </SwiperItem>
             )
           })}
@@ -145,7 +145,15 @@ class Index extends Component {
           loading={false}
           onClick={this.props.user}
         >
-          user
+          user info
+        </AtButton>
+        <AtButton
+          className="btn"
+          type="secondary"
+          loading={false}
+          onClick={this.props.qrClick}
+        >
+          qr
         </AtButton>
       </View>
     )
