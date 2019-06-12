@@ -1,15 +1,11 @@
-import { BOOK_DETAIL, BOOK_SHOW, BOOK_HIDE } from "../constants/detailConstants"
-
-const INITIAL_STATE = {
-  info: ""
-}
+import { BOOK_DETAIL, BOOK_SHOW, BOOK_HIDE } from "../constants/actionType"
 
 /**
  * 一个function对应一个action
  * @param state
  * @param action
  */
-export function detail(state = INITIAL_STATE, action) {
+export function detail(state = {}, action) {
   switch (action.type) {
     case BOOK_DETAIL:
       return {
@@ -22,7 +18,7 @@ export function detail(state = INITIAL_STATE, action) {
   }
 }
 
-export function load(state = INITIAL_STATE, action) {
+export function load(state = {}, action) {
   switch (action.type) {
     case BOOK_SHOW:
       return {

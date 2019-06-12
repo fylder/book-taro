@@ -1,4 +1,4 @@
-import { BOOK_DETAIL, BOOK_SHOW, BOOK_HIDE } from "../constants/detailConstants"
+import { BOOK_DETAIL, BOOK_SHOW, BOOK_HIDE } from "../constants/actionType"
 
 export const detail = (id: number, info: string) => {
   return {

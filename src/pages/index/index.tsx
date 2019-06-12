@@ -1,9 +1,8 @@
 import { ComponentClass } from "react"
 import Taro, { Component, Config } from "@tarojs/taro"
-import { View, Text, Image, Swiper, SwiperItem } from "@tarojs/components"
+import { View, Image, Swiper, SwiperItem } from "@tarojs/components"
 import { AtGrid, AtButton } from "taro-ui"
 import { connect } from "@tarojs/redux"
-import { add, minus, asyncAdd } from "../../actions/counter"
 import { image_data, item_datas } from "./data"
 import "./index.scss"
 
@@ -17,16 +16,9 @@ import "./index.scss"
 //
 // #endregion
 
-type PageStateProps = {
-  counter: {
-    num: number
-  }
-}
+type PageStateProps = {}
 
 type PageDispatchProps = {
-  add: () => void
-  dec: () => void
-  asyncAdd: () => any
   user: () => void
   itemClick: () => void
   qrClick: () => void
@@ -43,19 +35,8 @@ interface Index {
 }
 
 @connect(
-  ({ counter }) => ({
-    counter
-  }),
+  ({}) => ({}),
   dispatch => ({
-    add() {
-      dispatch(add())
-    },
-    dec() {
-      dispatch(minus())
-    },
-    asyncAdd() {
-      dispatch(asyncAdd())
-    },
     user() {
       Taro.navigateTo({
         url: "/pages/user/user"
@@ -127,18 +108,6 @@ class Index extends Component {
         </Swiper>
         <AtGrid data={item_datas} onClick={this.props.itemClick} />
         <View className="line" />
-        <AtButton className="btn" type="primary" onClick={this.props.add}>
-          +
-        </AtButton>
-        <AtButton className="btn" type="secondary" onClick={this.props.dec}>
-          -
-        </AtButton>
-        <AtButton className="btn" type="primary" onClick={this.props.asyncAdd}>
-          async
-        </AtButton>
-        <View className="btn">
-          <Text>{this.props.counter.num}</Text>
-        </View>
         <AtButton
           className="btn"
           type="secondary"

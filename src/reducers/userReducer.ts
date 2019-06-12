@@ -1,17 +1,13 @@
-import { USER_DETAIL } from "../constants/userConstants";
+import { USER_DETAIL } from "../constants/actionType"
 
-const INITIAL_STATE = {
-  num: 0
-};
-
-export default function user(state = INITIAL_STATE, action) {
+export default function user(state = {}, action) {
   switch (action.type) {
     case USER_DETAIL:
       return {
         ...state,
         username: action.username
-      };
+      }
     default:
-      return state;
+      return state
   }
 }

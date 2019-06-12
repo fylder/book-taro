@@ -117,8 +117,7 @@ class Detail extends Component<ComponentProps, ComponentState> {
                   src={data.image}
                   mode="widthFix"
                 />
-                <View className="at-article__h2">{this.props.detail.id}</View>
-                <View className="at-article__h3">{data.describe_title}</View>
+                <View className="at-article__h2">{data.describe_title}</View>
                 <View className="at-article__p">{data.describe} </View>
                 <View className="at-article__p">
                   {this.props.user.username}
