@@ -16,12 +16,19 @@ import "./index.scss"
 //
 // #endregion
 
-type PageStateProps = {}
+type PageStateProps = {
+  user: {
+    id: string
+    username: string
+    avatar: string
+  }
+}
 
 type PageDispatchProps = {
   user: () => void
   itemClick: () => void
   qrClick: () => void
+  shopping: (id: string) => void
 }
 
 type PageOwnProps = {}
@@ -35,7 +42,7 @@ interface Index {
 }
 
 @connect(
-  ({}) => ({}),
+  ({ user }) => ({ user }),
   dispatch => ({
     user() {
       Taro.navigateTo({
@@ -56,6 +63,17 @@ interface Index {
           duration: 2000
         })
       })
+    },
+    shopping(id: string) {
+      if (id) {
+        Taro.navigateTo({
+          url: "/pages/shopping/shopping"
+        })
+      } else {
+        Taro.navigateTo({
+          url: "/pages/user/user"
+        })
+      }
     }
   })
 )
@@ -115,6 +133,14 @@ class Index extends Component {
           onClick={this.props.user}
         >
           user info
+        </AtButton>
+        <AtButton
+          className="btn"
+          type="secondary"
+          loading={false}
+          onClick={this.props.shopping.bind(this, this.props.user.id)}
+        >
+          shopping cart
         </AtButton>
         <AtButton
           className="btn"

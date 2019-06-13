@@ -1,20 +1,24 @@
 import { ComponentClass } from "react"
 import Taro, { Component, Config } from "@tarojs/taro"
 import { View, Text } from "@tarojs/components"
-import { AtButton } from "taro-ui"
+import { AtAvatar, AtButton } from "taro-ui"
 import { connect } from "@tarojs/redux"
-import { detail } from "../../actions/userAction"
+import { detail, exit } from "../../actions/userAction"
 
 import "./user.scss"
 
 type PageStateProps = {
   user: {
+    id: string
     username: string
+    avatar: string
   }
 }
 
 type PageDispatchProps = {
   detail: () => void
+  clickItem: (position: number) => void
+  exit: () => void
 }
 
 type PageOwnProps = {
@@ -35,7 +39,33 @@ interface User {
   }),
   dispatch => ({
     detail() {
-      dispatch(detail("fylder"))
+      Taro.getUserInfo().then(result => {
+        console.dir(result)
+        const nickName = result.userInfo.nickName
+        const avatarUrl = result.userInfo.avatarUrl
+        dispatch(detail("1", nickName, avatarUrl))
+        // Taro.showToast({
+        //   title: nickName,
+        //   icon: "get√",
+        //   duration: 2000
+        // })
+      })
+    },
+    clickItem(position: number) {
+      console.dir(position)
+      // console.dir(e)
+      if (position === 2) {
+        Taro.navigateTo({
+          url: "/pages/shopping/shopping"
+        })
+      } else {
+        Taro.navigateTo({
+          url: "/pages/indent/indent"
+        })
+      }
+    },
+    exit() {
+      dispatch(exit())
     }
   })
 )
@@ -48,7 +78,7 @@ class User extends Component {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
   config: Config = {
-    navigationBarTitleText: "user"
+    navigationBarTitleText: "用户信息"
   }
   constructor(props, context) {
     super(props, context)
@@ -60,31 +90,82 @@ class User extends Component {
 
   componentWillUnmount() {}
 
-  componentDidShow() {
-    Taro.getUserInfo().then(result => {
-      const nickName = result.userInfo.nickName
-      this.props.dispatch(detail(nickName))
-      Taro.showToast({
-        title: nickName,
-        icon: "get√",
-        duration: 2000
-      })
-    })
-  }
+  componentDidShow() {}
 
   componentDidHide() {}
 
   render() {
-    return (
-      <View className="index">
-        <AtButton className="btn" type="secondary" onClick={this.props.detail}>
-          get
-        </AtButton>
-        <View className="btn">
-          <Text>{this.props.user.username}</Text>
+    let infoContent
+    if (this.props.user.username && this.props.user.username.length > 0) {
+      infoContent = (
+        <View className="index">
+          <View className="info-card">
+            <View className="at-row">
+              <View className="at-col at-col-1 at-col--auto">
+                <AtAvatar circle size="large" image={this.props.user.avatar} />
+              </View>
+              <View className="at-col">
+                <View className="btn">
+                  <Text>{this.props.user.username}</Text>
+                  <Text className=".at-article__p">
+                    {this.props.user.username}
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </View>
+          <AtButton
+            className="btn"
+            type="secondary"
+            onClick={this.props.clickItem.bind(this, 1)}
+          >
+            编辑信息
+          </AtButton>
+          <AtButton
+            className="btn"
+            type="secondary"
+            onClick={this.props.clickItem.bind(this, 2)}
+          >
+            购物车
+          </AtButton>
+          <AtButton
+            className="btn"
+            type="secondary"
+            onClick={this.props.clickItem.bind(this, 1)}
+          >
+            订单记录
+          </AtButton>
+          <AtButton className="btn" type="primary" onClick={this.props.exit}>
+            注销
+          </AtButton>
         </View>
-      </View>
-    )
+      )
+    } else {
+      infoContent = (
+        <View className="index">
+          <View className="info-card">
+            <View className="at-row">
+              <View className="at-col at-col-1 at-col--auto">
+                <AtAvatar circle size="large" image={this.props.user.avatar} />
+              </View>
+              <View className="at-col">
+                <View className="btn">
+                  <Text>请登录</Text>
+                </View>
+              </View>
+            </View>
+          </View>
+          <AtButton
+            className="btn"
+            type="secondary"
+            onClick={this.props.detail}
+          >
+            登录
+          </AtButton>
+        </View>
+      )
+    }
+    return <View>{infoContent}</View>
   }
 }
 
