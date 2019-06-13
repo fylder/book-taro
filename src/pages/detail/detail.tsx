@@ -127,7 +127,7 @@ class Detail extends Component<ComponentProps, ComponentState> {
           </View>
         </View>
         <View className="detail-footer">
-          <AtButton type="primary" full onClick={this.props.handlerDetail}>
+          <AtButton type="primary" full onClick={this.props.handlerDetail.bind(this)}>
             get√
           </AtButton>
         </View>

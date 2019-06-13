@@ -124,15 +124,15 @@ class Index extends Component {
             )
           })}
         </Swiper>
-        <AtGrid data={item_datas} onClick={this.props.itemClick} />
+        <AtGrid data={item_datas} onClick={this.props.itemClick.bind(this)} />
         <View className="line" />
         <AtButton
           className="btn"
           type="secondary"
           loading={false}
-          onClick={this.props.user}
+          onClick={this.props.user.bind(this)}
         >
-          user info
+          用户信息
         </AtButton>
         <AtButton
           className="btn"
@@ -140,15 +140,15 @@ class Index extends Component {
           loading={false}
           onClick={this.props.shopping.bind(this, this.props.user.id)}
         >
-          shopping cart
+          购物车
         </AtButton>
         <AtButton
           className="btn"
           type="secondary"
           loading={false}
-          onClick={this.props.qrClick}
+          onClick={this.props.qrClick.bind(this)}
         >
-          qr
+          扫码
         </AtButton>
       </View>
     )

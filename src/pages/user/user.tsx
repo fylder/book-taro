@@ -135,7 +135,7 @@ class User extends Component {
           >
             订单记录
           </AtButton>
-          <AtButton className="btn" type="primary" onClick={this.props.exit}>
+          <AtButton className="btn" type="primary" onClick={this.props.exit.bind(this)}>
             注销
           </AtButton>
         </View>
@@ -158,7 +158,7 @@ class User extends Component {
           <AtButton
             className="btn"
             type="secondary"
-            onClick={this.props.detail}
+            onClick={this.props.detail.bind(this)}
           >
             登录
           </AtButton>
