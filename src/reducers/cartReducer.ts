@@ -1,21 +1,39 @@
 import {
-  SHOPPING_CART_SELECT,
-  SHOPPING_CART_SAVE
+  CART_ADD,
+  CART_REMOVE,
+  CART_SAVE,
+  CART_SELECT
 } from "../constants/actionType"
+
+const STATE = {
+  cart: []
+}
 
 /**
  * 一个function对应一个action
  * @param state
  * @param action
  */
-export default function cart(state = {}, action) {
+export default function cart(state = STATE, action) {
   switch (action.type) {
-    case SHOPPING_CART_SELECT:
+    case CART_SELECT:
       return {
         ...state,
         cart: action.cart
       }
-    case SHOPPING_CART_SAVE:
+    case CART_SAVE:
+      return {
+        ...state,
+        cart: action.cart
+      }
+    case CART_ADD:
+      let cartTemp = state.cart
+      cartTemp.unshift(action.cartItem)
+      return {
+        ...state,
+        cart: cartTemp
+      }
+    case CART_REMOVE:
       return {
         ...state,
         cart: action.cart

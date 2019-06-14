@@ -1,12 +1,12 @@
-import { ComponentClass } from "react"
-import Taro, { Component, Config } from "@tarojs/taro"
 import { View } from "@tarojs/components"
-import { AtList, AtListItem, AtInputNumber } from "taro-ui"
 import { connect } from "@tarojs/redux"
-import { query, save } from "../../actions/cartAction"
-import CartList from "../../actions/model/cart"
-
-import "./shopping.scss"
+import Taro, { Component, Config } from "@tarojs/taro"
+import { ComponentClass } from "react"
+import { AtButton, AtInputNumber, AtList, AtListItem, AtMessage } from "taro-ui"
+import { remove, save } from "../../actions/cartAction"
+import { add } from "../../actions/indentAction"
+import { IndentModel } from "../../actions/model/indentModel"
+import "./cart.scss"
 
 type PageStateProps = {
   user: {
@@ -24,11 +24,26 @@ type PageStateProps = {
       }
     ]
   }
+  indent: {
+    indentList: [
+      {
+        indent: [
+          {
+            id: string
+            name: string
+            count: number
+            date: string
+          }
+        ]
+      }
+    ]
+  }
 }
 
 type PageDispatchProps = {
-  detail: () => void
   handleChange: () => void
+  handlerSubmit: () => void
+  handleBuy: () => void
 }
 
 type PageOwnProps = {
@@ -44,26 +59,53 @@ interface ComponentProps {
 interface ComponentState {
   id: string
 }
-interface Shopping {
+interface Cart {
   props: IProps
 }
 
 @connect(
-  ({ user, cart }) => ({
+  ({ user, cart, indent }) => ({
     user,
-    cart
+    cart,
+    indent
   }),
   dispatch => ({
-    detail() {},
     handleChange(item, cartList, value: number) {
       cartList = cartList.map((it, index) =>
         it.id === item.id ? { ...it, count: value } : it
       )
       dispatch(save(cartList))
+    },
+    handlerSubmit(datas: Array<any>) {
+      const indent = new IndentModel()
+      datas.forEach(item => {
+        indent.add(item)
+      })
+      indent.name = "霸气西柚"
+      console.log("霸气西柚的数据")
+      dispatch(
+        add(indent, () => {
+          Taro.atMessage({
+            message: "提交订单",
+            type: "info"
+          })
+          setTimeout(() => {
+            dispatch(remove())
+            Taro.redirectTo({
+              url: "/pages/indent/indent"
+            })
+          }, 2000)
+        })
+      )
+    },
+    handleBuy() {
+      Taro.navigateTo({
+        url: "/pages/detail/detail?id=0"
+      })
     }
   })
 )
-class Shopping extends Component<ComponentProps, ComponentState> {
+class Cart extends Component<ComponentProps, ComponentState> {
   /**
    * 指定config的类型声明为: Taro.Config
    *
@@ -89,24 +131,50 @@ class Shopping extends Component<ComponentProps, ComponentState> {
   componentDidShow() {
     //query data
     console.log("indent -> id:" + this.props.user.id)
-    this.props.dispatch(query())
   }
 
   componentDidHide() {}
 
   render() {
-    let datas
+    let datas: Array<any>
     if (this.props.cart.cart) {
       datas = this.props.cart.cart
     } else {
       datas = []
     }
+
     let dataList: any = []
     datas.map((item, index) => {
       dataList.push(item)
     })
+
+    let submitContent: any
+    if (datas.length > 0) {
+      submitContent = (
+        <AtButton
+          className="second-btn"
+          type="primary"
+          full
+          onClick={this.props.handlerSubmit.bind(this, datas)}
+        >
+          提交订单
+        </AtButton>
+      )
+    } else {
+      submitContent = (
+        <AtButton
+          className="second-btn"
+          type="secondary"
+          full
+          onClick={this.props.handleBuy.bind(this)}
+        >
+          去浏览
+        </AtButton>
+      )
+    }
     return (
       <View>
+        <AtMessage />
         <View className="at-article__h2">订单</View>
         <AtList>
           {datas.map((item, index) => {
@@ -114,7 +182,7 @@ class Shopping extends Component<ComponentProps, ComponentState> {
               <View key={index}>
                 <AtListItem
                   title="2019-06-13 15:25:33"
-                  note="黑森林草莓味"
+                  note={item.name}
                   thumb="http://img10.360buyimg.com/jdphoto/s72x72_jfs/t5872/209/5240187906/2872/8fa98cd/595c3b2aN4155b931.png"
                 />
                 <View className="at-row">
@@ -136,11 +204,7 @@ class Shopping extends Component<ComponentProps, ComponentState> {
               </View>
             )
           })}
-          <AtListItem
-            title="2019-06-13 15:25:33"
-            note="芝士蛋糕"
-            thumb="http://img12.360buyimg.com/jdphoto/s72x72_jfs/t10660/330/203667368/1672/801735d7/59c85643N31e68303.png"
-          />
+          {submitContent}
         </AtList>
       </View>
     )
@@ -154,4 +218,4 @@ class Shopping extends Component<ComponentProps, ComponentState> {
 //
 // #endregion
 
-export default Shopping as ComponentClass<PageOwnProps, PageState>
+export default Cart as ComponentClass<PageOwnProps, PageState>

@@ -1,4 +1,4 @@
-class Cart {
+export class CartModel {
   id: string
   name: string
   count: number
@@ -12,12 +12,14 @@ class Cart {
   }
 }
 
-class CartList {
-  cartList: Array<Cart>
+export default class CartListModel {
+  cartList: Array<CartModel>
 
-  public add(cart: Cart) {
+  constructor() {
+    this.cartList = []
+  }
+  
+  public add(cart: CartModel) {
     this.cartList.push(cart)
   }
 }
-
-export default CartList

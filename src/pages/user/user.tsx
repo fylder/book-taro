@@ -1,10 +1,9 @@
-import { ComponentClass } from "react"
-import Taro, { Component, Config } from "@tarojs/taro"
-import { View, Text } from "@tarojs/components"
-import { AtAvatar, AtButton } from "taro-ui"
+import { Text, View } from "@tarojs/components"
 import { connect } from "@tarojs/redux"
+import Taro, { Component, Config } from "@tarojs/taro"
+import { ComponentClass } from "react"
+import { AtAvatar, AtButton } from "taro-ui"
 import { detail, exit } from "../../actions/userAction"
-
 import "./user.scss"
 
 type PageStateProps = {
@@ -16,9 +15,9 @@ type PageStateProps = {
 }
 
 type PageDispatchProps = {
-  detail: () => void
-  clickItem: (position: number) => void
-  exit: () => void
+  handleLogin: () => void
+  handleClickItem: (position: number) => void
+  handleExit: () => void
 }
 
 type PageOwnProps = {
@@ -38,9 +37,8 @@ interface User {
     user
   }),
   dispatch => ({
-    detail() {
+    handleLogin() {
       Taro.getUserInfo().then(result => {
-        console.dir(result)
         const nickName = result.userInfo.nickName
         const avatarUrl = result.userInfo.avatarUrl
         dispatch(detail("1", nickName, avatarUrl))
@@ -51,12 +49,10 @@ interface User {
         // })
       })
     },
-    clickItem(position: number) {
-      console.dir(position)
-      // console.dir(e)
+    handleClickItem(position: number) {
       if (position === 2) {
         Taro.navigateTo({
-          url: "/pages/shopping/shopping"
+          url: "/pages/cart/cart"
         })
       } else {
         Taro.navigateTo({
@@ -64,7 +60,7 @@ interface User {
         })
       }
     },
-    exit() {
+    handleExit() {
       dispatch(exit())
     }
   })
@@ -117,25 +113,29 @@ class User extends Component {
           <AtButton
             className="btn"
             type="secondary"
-            onClick={this.props.clickItem.bind(this, 1)}
+            onClick={this.props.handleClickItem.bind(this, 1)}
           >
             编辑信息
           </AtButton>
           <AtButton
             className="btn"
             type="secondary"
-            onClick={this.props.clickItem.bind(this, 2)}
+            onClick={this.props.handleClickItem.bind(this, 2)}
           >
             购物车
           </AtButton>
           <AtButton
             className="btn"
             type="secondary"
-            onClick={this.props.clickItem.bind(this, 1)}
+            onClick={this.props.handleClickItem.bind(this, 1)}
           >
             订单记录
           </AtButton>
-          <AtButton className="btn" type="primary" onClick={this.props.exit.bind(this)}>
+          <AtButton
+            className="btn"
+            type="primary"
+            onClick={this.props.handleExit.bind(this)}
+          >
             注销
           </AtButton>
         </View>
@@ -158,7 +158,7 @@ class User extends Component {
           <AtButton
             className="btn"
             type="secondary"
-            onClick={this.props.detail.bind(this)}
+            onClick={this.props.handleLogin.bind(this)}
           >
             登录
           </AtButton>

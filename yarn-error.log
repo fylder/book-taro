@@ -1,8 +1,8 @@
 Arguments: 
-  /usr/local/Cellar/node/12.4.0/bin/node /usr/local/Cellar/yarn/1.16.0/libexec/bin/yarn.js add ~taro-ui/dist/style/components/article.scss --silent --no-progress
+  /usr/local/Cellar/node/12.4.0/bin/node /usr/local/Cellar/yarn/1.16.0/libexec/bin/yarn.js add src/actions/model/cartModel --silent --no-progress
 
 PATH: 
-  /usr/local/lib/node_modules/npm/node_modules/npm-lifecycle/node-gyp-bin:/Users/fylder/wechat/book-taro/node_modules/.bin:/var/folders/r7/gllk503d1_7g118yhr__lc8r0000gn/T/yarn--1560319299863-0.7205030326127302:/Users/fylder/wechat/book-taro/node_modules/.bin:/Users/fylder/.config/yarn/link/node_modules/.bin:/usr/local/Cellar/node/12.4.0/libexec/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/Cellar/node/12.4.0/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/Cellar/node/12.4.0/bin/node_modules/npm/bin/node-gyp-bin:/usr/local/var/pyenv/shims:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Applications/VMware Fusion.app/Contents/Public:/usr/local/share/dotnet:~/.dotnet/tools:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/usr/local/var/pyenv/shims:/usr/local/mysql/bin:/Users/fylder/Library/Android/sdk/tools:/Users/fylder/Library/Android/sdk/platform-tools:/Users/fylder/Library/Android/sdk/ndk-bundle:/Users/fylder/android/flutter/bin:/usr/local/Cellar/python/3.7.2_1/bin:/usr/local/mysql/bin:/Users/fylder/Library/Android/sdk/tools:/Users/fylder/Library/Android/sdk/platform-tools:/Users/fylder/Library/Android/sdk/ndk-bundle:/Users/fylder/android/flutter/bin:/usr/local/Cellar/python/3.7.2_1/bin
+  /usr/local/lib/node_modules/npm/node_modules/npm-lifecycle/node-gyp-bin:/Users/fylder/wechat/book-taro/node_modules/.bin:/var/folders/r7/gllk503d1_7g118yhr__lc8r0000gn/T/yarn--1560477575743-0.27317457942308376:/Users/fylder/wechat/book-taro/node_modules/.bin:/Users/fylder/.config/yarn/link/node_modules/.bin:/usr/local/Cellar/node/12.4.0/libexec/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/Cellar/node/12.4.0/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/Cellar/node/12.4.0/bin/node_modules/npm/bin/node-gyp-bin:/usr/local/var/pyenv/shims:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Applications/VMware Fusion.app/Contents/Public:/usr/local/share/dotnet:~/.dotnet/tools:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/usr/local/var/pyenv/shims:/usr/local/mysql/bin:/Users/fylder/Library/Android/sdk/tools:/Users/fylder/Library/Android/sdk/platform-tools:/Users/fylder/Library/Android/sdk/ndk-bundle:/Users/fylder/android/flutter/bin:/usr/local/Cellar/python/3.7.2_1/bin:/usr/local/mysql/bin:/Users/fylder/Library/Android/sdk/tools:/Users/fylder/Library/Android/sdk/platform-tools:/Users/fylder/Library/Android/sdk/ndk-bundle:/Users/fylder/android/flutter/bin:/usr/local/Cellar/python/3.7.2_1/bin
 
 Yarn version: 
   1.16.0
@@ -14,7 +14,7 @@ Platform:
   darwin x64
 
 Trace: 
-  Error: https://registry.npm.taobao.org/~taro-ui%2fdist/style/components/article.scss: [not_found] document not found
+  Error: https://registry.npm.taobao.org/src%2factions/model/cartModel: [not_found] document not found
       at Request.params.callback [as _callback] (/usr/local/Cellar/yarn/1.16.0/libexec/lib/cli.js:66091:18)
       at Request.self.callback (/usr/local/Cellar/yarn/1.16.0/libexec/lib/cli.js:129590:22)
       at Request.emit (events.js:200:13)

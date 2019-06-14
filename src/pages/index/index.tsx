@@ -25,10 +25,10 @@ type PageStateProps = {
 }
 
 type PageDispatchProps = {
-  user: () => void
-  itemClick: () => void
-  qrClick: () => void
-  shopping: (id: string) => void
+  handleUser: () => void
+  handleItemClick: () => void
+  handleqr: () => void
+  handleCart: (id: string) => void
 }
 
 type PageOwnProps = {}
@@ -44,18 +44,17 @@ interface Index {
 @connect(
   ({ user }) => ({ user }),
   dispatch => ({
-    user() {
+    handleUser() {
       Taro.navigateTo({
         url: "/pages/user/user"
       })
     },
-    itemClick(item: object, index: number) {
-      console.dir(item)
+    handleItemClick(item: object, index: number) {
       Taro.navigateTo({
         url: "/pages/detail/detail?id=" + index
       })
     },
-    qrClick() {
+    handleqr() {
       Taro.scanCode().then(response => {
         Taro.showToast({
           title: response.result,
@@ -64,10 +63,10 @@ interface Index {
         })
       })
     },
-    shopping(id: string) {
+    handleCart(id: string) {
       if (id) {
         Taro.navigateTo({
-          url: "/pages/shopping/shopping"
+          url: "/pages/cart/cart"
         })
       } else {
         Taro.navigateTo({
@@ -124,13 +123,13 @@ class Index extends Component {
             )
           })}
         </Swiper>
-        <AtGrid data={item_datas} onClick={this.props.itemClick.bind(this)} />
+        <AtGrid data={item_datas} onClick={this.props.handleItemClick.bind(this)} />
         <View className="line" />
         <AtButton
           className="btn"
           type="secondary"
           loading={false}
-          onClick={this.props.user.bind(this)}
+          onClick={this.props.handleUser.bind(this)}
         >
           用户信息
         </AtButton>
@@ -138,7 +137,7 @@ class Index extends Component {
           className="btn"
           type="secondary"
           loading={false}
-          onClick={this.props.shopping.bind(this, this.props.user.id)}
+          onClick={this.props.handleCart.bind(this, this.props.user.id)}
         >
           购物车
         </AtButton>
@@ -146,7 +145,7 @@ class Index extends Component {
           className="btn"
           type="secondary"
           loading={false}
-          onClick={this.props.qrClick.bind(this)}
+          onClick={this.props.handleqr.bind(this)}
         >
           扫码
         </AtButton>

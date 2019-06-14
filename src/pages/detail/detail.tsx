@@ -1,9 +1,11 @@
-import { ComponentClass } from "react"
-import Taro, { Component, Config } from "@tarojs/taro"
-import { View, Image } from "@tarojs/components"
-import { AtButton, AtTag, AtToast } from "taro-ui"
+import { Image, View } from "@tarojs/components"
 import { connect } from "@tarojs/redux"
+import Taro, { Component, Config } from "@tarojs/taro"
+import { ComponentClass } from "react"
+import { AtButton, AtTag, AtToast } from "taro-ui"
+import { add } from "../../actions/cartAction"
 import { detail, load } from "../../actions/detailAction"
+import { CartModel } from "../../actions/model/cartModel"
 import anime_data from "./data"
 import "./detail.scss"
 
@@ -17,6 +19,16 @@ type PageStateProps = {
   }
   load: {
     isLoading: boolean
+  }
+  cart: {
+    cart: [
+      {
+        id: string
+        name: string
+        count: number
+        date: string
+      }
+    ]
   }
 }
 
@@ -48,10 +60,13 @@ interface ComponentState {
     detail,
     user,
     load
+    // cart
   }),
   dispatch => ({
-    handlerDetail() {
+    handlerDetail(id, name) {
       dispatch(load(true))
+      const cart = new CartModel(id, name, 1, "")
+      dispatch(add(cart))
       setTimeout(() => {
         dispatch(load(false))
       }, 2000)
@@ -127,7 +142,15 @@ class Detail extends Component<ComponentProps, ComponentState> {
           </View>
         </View>
         <View className="detail-footer">
-          <AtButton type="primary" full onClick={this.props.handlerDetail.bind(this)}>
+          <AtButton
+            type="primary"
+            full
+            onClick={this.props.handlerDetail.bind(
+              this,
+              this.state.id,
+              data.title
+            )}
+          >
             get√
           </AtButton>
         </View>

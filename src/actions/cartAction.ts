@@ -1,22 +1,18 @@
 import {
-  SHOPPING_CART_SELECT,
-  SHOPPING_CART_SAVE
+  CART_ADD,
+  CART_REMOVE,
+  CART_SAVE,
+  CART_SELECT
 } from "../constants/actionType"
-import CartList from "./model/cart"
+import CartListModel, { CartModel } from "./model/cartModel"
 
 export const query = () => {
   return {
-    type: SHOPPING_CART_SELECT,
+    type: CART_SELECT,
     cart: [
       {
-        id: 1,
-        name: "黑森林草莓味",
-        count: 1,
-        date: ""
-      },
-      {
-        id: 2,
-        name: "黑森林草莓味",
+        id: "1",
+        name: "天气之子",
         count: 1,
         date: ""
       }
@@ -24,9 +20,23 @@ export const query = () => {
   }
 }
 
-export const save = (cartList: CartList) => {
+export const save = (cartList: CartListModel) => {
   return {
-    type: SHOPPING_CART_SAVE,
+    type: CART_SAVE,
     cart: cartList
+  }
+}
+
+export const add = (cart: CartModel) => {
+  return {
+    type: CART_ADD,
+    cartItem: cart
+  }
+}
+
+export const remove = () => {
+  return {
+    type: CART_REMOVE,
+    cart: []
   }
 }

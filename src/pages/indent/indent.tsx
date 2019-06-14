@@ -1,10 +1,8 @@
-import { ComponentClass } from "react"
-import Taro, { Component, Config } from "@tarojs/taro"
-import { View, Text } from "@tarojs/components"
-import { AtList, AtListItem } from "taro-ui"
+import { View } from "@tarojs/components"
 import { connect } from "@tarojs/redux"
-import { query } from "../../actions/indentAction"
-
+import Taro, { Component, Config } from "@tarojs/taro"
+import { ComponentClass } from "react"
+import { AtDivider, AtIcon, AtList, AtListItem, AtMessage } from "taro-ui"
 import "./indent.scss"
 
 type PageStateProps = {
@@ -14,15 +12,23 @@ type PageStateProps = {
     avatar: string
   }
   indent: {
-    id: string
-    name: string
-    count: number
-    date: string
+    indentList: [
+      {
+        indent: [
+          {
+            id: string
+            name: string
+            count: number
+            date: string
+          }
+        ]
+      }
+    ]
   }
 }
 
 type PageDispatchProps = {
-  detail: () => void
+  handleDetail: () => void
 }
 
 type PageOwnProps = {
@@ -43,8 +49,11 @@ interface Indent {
     indent
   }),
   dispatch => ({
-    detail() {
-      dispatch(query(this.props.user.id))
+    handleDetail(item, index) {
+      Taro.atMessage({
+        message: "click:" + item.name,
+        type: "info"
+      })
     }
   })
 )
@@ -69,19 +78,37 @@ class Indent extends Component {
 
   componentWillUnmount() {}
 
-  componentDidShow() {
-    //query data
-    console.log("indent -> id:" + this.props.user.id)
-    this.props.dispatch(query(this.props.user.id))
-  }
+  componentDidShow() {}
 
   componentDidHide() {}
 
   render() {
+    let datas: Array<any>
+    if (this.props.indent.indentList) {
+      datas = this.props.indent.indentList
+    } else {
+      datas = []
+    }
     return (
       <View>
+        <AtMessage />
         <View className="at-article__h2">订单</View>
         <AtList>
+          {datas.map((item, index) => {
+            return (
+              <AtListItem
+                key={index}
+                title="2019-06-13 15:25:33"
+                note={item.name}
+                arrow="right"
+                thumb="https://img12.360buyimg.com/jdphoto/s72x72_jfs/t6160/14/2008729947/2754/7d512a86/595c3aeeNa89ddf71.png"
+                onClick={this.props.handleDetail.bind(this, item, index)}
+              />
+            )
+          })}
+          <AtDivider>
+            <AtIcon value="check-circle" />
+          </AtDivider>
           <AtListItem
             title="2019-06-13 15:25:33"
             note="树莓味"

@@ -26,7 +26,7 @@ class App extends Component {
       "pages/index/index",
       "pages/user/user",
       "pages/detail/detail",
-      "pages/shopping/shopping",
+      "pages/cart/cart",
       "pages/indent/indent"
     ],
     window: {
