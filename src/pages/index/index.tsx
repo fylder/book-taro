@@ -2,7 +2,7 @@ import { Image, Swiper, SwiperItem, View } from "@tarojs/components"
 import { connect } from "@tarojs/redux"
 import Taro, { Component, Config } from "@tarojs/taro"
 import { ComponentClass } from "react"
-import { AtButton, AtGrid } from "taro-ui"
+import { AtButton, AtGrid, AtIcon } from "taro-ui"
 import { detail } from "../../actions/userAction"
 import { image_data, item_datas } from "./data"
 import "./index.scss"
@@ -76,7 +76,7 @@ interface Index {
         })
       }
     },
-    handleItemClick(item: object, index: number) {
+    handleItemClick(index: number) {
       Taro.navigateTo({
         url: "/pages/detail/detail?id=" + index
       })
@@ -125,7 +125,7 @@ class Index extends Component {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
   config: Config = {
-    navigationBarTitleText: "home"
+    navigationBarTitleText: "首页"
   }
 
   componentWillReceiveProps(nextProps) {
@@ -143,57 +143,103 @@ class Index extends Component {
   render() {
     return (
       <View className="index">
-        <Swiper
-          className="swiper-lay"
-          indicatorColor="#999"
-          indicatorActiveColor="#333"
-          vertical={false}
-          circular={true}
-          interval={3000}
-          indicatorDots={true}
-          autoplay={true}
-        >
-          {image_data.map((item, index) => {
-            return (
-              <SwiperItem key={index} className="swiper-item">
-                <Image
-                  src={item.image}
-                  className="swiper-img"
-                  mode="widthFix"
-                />
-              </SwiperItem>
-            )
-          })}
-        </Swiper>
-        <AtGrid
-          data={item_datas}
-          onClick={this.props.handleItemClick.bind(this)}
-        />
-        <View className="line" />
-        <AtButton
-          className="btn"
-          type="secondary"
-          loading={false}
-          onClick={this.props.handleUser.bind(this)}
-        >
-          用户信息
-        </AtButton>
-        <AtButton
-          className="btn"
-          type="secondary"
-          loading={false}
-          onClick={this.props.handleInfo.bind(this, this.props.user.id)}
-        >
-          fylder
-        </AtButton>
-        <AtButton
-          className="btn"
-          type="secondary"
-          loading={false}
-          onClick={this.props.handleCart.bind(this, this.props.user.id)}
-        >
-          购物车
-        </AtButton>
+        <View className="lay">
+          <View className="lay_bg">
+            <Image
+              className="lay_img"
+              src="http://img5.mtime.cn/pi/2019/05/29/083826.86010876_1000X1000.jpg"
+              mode="aspectFill"
+            />
+          </View>
+          <View className="lay_fg">
+            <View className="at-row at-row__align--center lay_search">
+              <View className="at-col at-col__offset-1 at-col-1">
+                <AtIcon value="search" size="18" color="#AAAAAA" />
+              </View>
+              <View className="at-col at-article__h3 at-col-9 lay_font">
+                Search
+              </View>
+            </View>
+            <View className="lay_container">
+              {/* <AtGrid
+                className="lay_container_grid"
+                data={item_datas}
+                hasBorder={false}
+                onClick={this.props.handleItemClick.bind(this)}
+              /> */}
+              <View className="at-article__h3 grid_title">新海诚</View>
+              <View className="at-row at-row--wrap grid_lay">
+                {item_datas.map((item, index) => {
+                  return (
+                    <View
+                      className="at-col at-col-4 grid_item_lay"
+                      key={index}
+                      onClick={this.props.handleItemClick.bind(this, index)}
+                    >
+                      <View className="grid_lay_img">
+                        <Image
+                          className="grid_img"
+                          src={item.image}
+                          mode="widthFix"
+                        />
+                      </View>
+                      <View className="at-article__h3 at-row__align--center grid_text">
+                        {item.value}
+                      </View>
+                    </View>
+                  )
+                })}
+              </View>
+
+              <Swiper
+                className="swiper-lay"
+                indicatorColor="#999"
+                indicatorActiveColor="#333"
+                vertical={false}
+                circular={true}
+                interval={3000}
+                indicatorDots={true}
+                autoplay={true}
+              >
+                {image_data.map((item, index) => {
+                  return (
+                    <SwiperItem key={index} className="swiper-item">
+                      <Image
+                        src={item.image}
+                        className="swiper-img"
+                        mode="widthFix"
+                      />
+                    </SwiperItem>
+                  )
+                })}
+              </Swiper>
+              <AtButton
+                className="btn"
+                type="secondary"
+                loading={false}
+                onClick={this.props.handleUser.bind(this)}
+              >
+                用户信息
+              </AtButton>
+              <AtButton
+                className="btn"
+                type="secondary"
+                loading={false}
+                onClick={this.props.handleInfo.bind(this, this.props.user.id)}
+              >
+                fylder
+              </AtButton>
+              <AtButton
+                className="btn"
+                type="secondary"
+                loading={false}
+                onClick={this.props.handleCart.bind(this, this.props.user.id)}
+              >
+                购物车
+              </AtButton>
+            </View>
+          </View>
+        </View>
       </View>
     )
   }
