@@ -103,9 +103,6 @@ class User extends Component {
               <View className="at-col">
                 <View className="btn">
                   <Text>{this.props.user.username}</Text>
-                  <Text className=".at-article__p">
-                    {this.props.user.username}
-                  </Text>
                 </View>
               </View>
             </View>

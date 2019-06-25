@@ -1,8 +1,9 @@
-import { ComponentClass } from "react"
-import Taro, { Component, Config } from "@tarojs/taro"
-import { View, Image, Swiper, SwiperItem } from "@tarojs/components"
-import { AtGrid, AtButton } from "taro-ui"
+import { Image, Swiper, SwiperItem, View } from "@tarojs/components"
 import { connect } from "@tarojs/redux"
+import Taro, { Component, Config } from "@tarojs/taro"
+import { ComponentClass } from "react"
+import { AtButton, AtGrid } from "taro-ui"
+import { detail } from "../../actions/userAction"
 import { image_data, item_datas } from "./data"
 import "./index.scss"
 
@@ -25,10 +26,13 @@ type PageStateProps = {
 }
 
 type PageDispatchProps = {
+  handleLogin(): () => void
   handleUser: () => void
+  handleInfo: () => void
   handleItemClick: () => void
   handleqr: () => void
   handleCart: (id: string) => void
+  handleHttp: () => void
 }
 
 type PageOwnProps = {}
@@ -44,10 +48,33 @@ interface Index {
 @connect(
   ({ user }) => ({ user }),
   dispatch => ({
+    handleLogin() {
+      Taro.getUserInfo().then(result => {
+        const nickName = result.userInfo.nickName
+        const avatarUrl = result.userInfo.avatarUrl
+        dispatch(detail("1", nickName, avatarUrl))
+        // Taro.showToast({
+        //   title: nickName,
+        //   icon: "get√",
+        //   duration: 2000
+        // })
+      })
+    },
     handleUser() {
       Taro.navigateTo({
         url: "/pages/user/user"
       })
+    },
+    handleInfo(id: string) {
+      if (id) {
+        Taro.navigateTo({
+          url: "/pages/info/info"
+        })
+      } else {
+        Taro.navigateTo({
+          url: "/pages/user/user"
+        })
+      }
     },
     handleItemClick(item: object, index: number) {
       Taro.navigateTo({
@@ -73,6 +100,19 @@ interface Index {
           url: "/pages/user/user"
         })
       }
+    },
+    handleHttp() {
+      Taro.request({
+        url: "https://wechat.fylder.me:8022/api/album/photos",
+        method: "GET"
+        // data: {
+        //   foo: "foo",
+        //   bar: 10
+        // },
+        // header: {
+        //   Authorization: "Bearer 1a03f7c01801f667933a37e1413b4be6622793e5"
+        // }
+      }).then(res => console.log(res.data))
     }
   })
 )
@@ -91,7 +131,9 @@ class Index extends Component {
   componentWillReceiveProps(nextProps) {
     console.log(this.props, nextProps)
   }
-
+  componentWillMount() {
+    this.props.handleLogin()
+  }
   componentWillUnmount() {}
 
   componentDidShow() {}
@@ -123,7 +165,10 @@ class Index extends Component {
             )
           })}
         </Swiper>
-        <AtGrid data={item_datas} onClick={this.props.handleItemClick.bind(this)} />
+        <AtGrid
+          data={item_datas}
+          onClick={this.props.handleItemClick.bind(this)}
+        />
         <View className="line" />
         <AtButton
           className="btn"
@@ -137,17 +182,17 @@ class Index extends Component {
           className="btn"
           type="secondary"
           loading={false}
-          onClick={this.props.handleCart.bind(this, this.props.user.id)}
+          onClick={this.props.handleInfo.bind(this, this.props.user.id)}
         >
-          购物车
+          fylder
         </AtButton>
         <AtButton
           className="btn"
           type="secondary"
           loading={false}
-          onClick={this.props.handleqr.bind(this)}
+          onClick={this.props.handleCart.bind(this, this.props.user.id)}
         >
-          扫码
+          购物车
         </AtButton>
       </View>
     )

@@ -2,12 +2,15 @@
 	"miniprogramRoot": "dist/",
 	"projectname": "book-taro",
 	"description": "book",
-	"appid": "wx4e286374ab934672",
+	"appid": "wx671e412fee5905eb",
 	"setting": {
 		"urlCheck": true,
 		"es6": false,
 		"postcss": false,
-		"minified": false
+		"minified": false,
+		"newFeature": true,
+		"autoAudits": false,
+		"checkInvalidKey": true
 	},
 	"compileType": "miniprogram",
 	"simulatorType": "wechat",
