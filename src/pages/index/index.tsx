@@ -2,7 +2,7 @@ import { Image, Swiper, SwiperItem, View } from "@tarojs/components"
 import { connect } from "@tarojs/redux"
 import Taro, { Component, Config } from "@tarojs/taro"
 import { ComponentClass } from "react"
-import { AtButton, AtGrid, AtIcon } from "taro-ui"
+import { AtIcon } from "taro-ui"
 import { detail } from "../../actions/userAction"
 import { image_data, item_datas } from "./data"
 import "./index.scss"
@@ -30,6 +30,7 @@ type PageDispatchProps = {
   handleUser: () => void
   handleInfo: () => void
   handleItemClick: () => void
+  handleTypeItemClick: () => void
   handleqr: () => void
   handleCart: (id: string) => void
   handleHttp: () => void
@@ -60,45 +61,40 @@ interface Index {
         // })
       })
     },
-    handleUser() {
-      Taro.navigateTo({
-        url: "/pages/user/user"
-      })
-    },
-    handleInfo(id: string) {
-      if (id) {
-        Taro.navigateTo({
-          url: "/pages/info/info"
-        })
-      } else {
-        Taro.navigateTo({
-          url: "/pages/user/user"
-        })
-      }
-    },
     handleItemClick(index: number) {
       Taro.navigateTo({
         url: "/pages/detail/detail?id=" + index
       })
     },
-    handleqr() {
-      Taro.scanCode().then(response => {
-        Taro.showToast({
-          title: response.result,
-          icon: "success",
-          duration: 2000
-        })
-      })
-    },
-    handleCart(id: string) {
-      if (id) {
-        Taro.navigateTo({
-          url: "/pages/cart/cart"
-        })
-      } else {
-        Taro.navigateTo({
-          url: "/pages/user/user"
-        })
+    handleTypeItemClick(index: number, id: string) {
+      switch (index) {
+        case 0:
+          Taro.navigateTo({
+            url: "/pages/user/user"
+          })
+          break
+        case 1:
+          if (id) {
+            Taro.navigateTo({
+              url: "/pages/info/info"
+            })
+          } else {
+            Taro.navigateTo({
+              url: "/pages/user/user"
+            })
+          }
+          break
+        case 2:
+          if (id) {
+            Taro.navigateTo({
+              url: "/pages/cart/cart"
+            })
+          } else {
+            Taro.navigateTo({
+              url: "/pages/user/user"
+            })
+          }
+          break
       }
     },
     handleHttp() {
@@ -141,6 +137,7 @@ class Index extends Component {
   componentDidHide() {}
 
   render() {
+    const typeArray = ["用户信息", "fylder", "购物车"]
     return (
       <View className="index">
         <View className="lay">
@@ -213,30 +210,37 @@ class Index extends Component {
                   )
                 })}
               </Swiper>
-              <AtButton
-                className="btn"
-                type="secondary"
-                loading={false}
-                onClick={this.props.handleUser.bind(this)}
-              >
-                用户信息
-              </AtButton>
-              <AtButton
-                className="btn"
-                type="secondary"
-                loading={false}
-                onClick={this.props.handleInfo.bind(this, this.props.user.id)}
-              >
-                fylder
-              </AtButton>
-              <AtButton
-                className="btn"
-                type="secondary"
-                loading={false}
-                onClick={this.props.handleCart.bind(this, this.props.user.id)}
-              >
-                购物车
-              </AtButton>
+
+              <View className="second_lay">
+                <View className="at-row at-row--wrap">
+                  {typeArray.map((item, index) => {
+                    return (
+                      <View className="at-col at-col-6" key={index}>
+                        <View className="second_item_lay">
+                          <Image
+                            className="second_item_img"
+                            src="http://img5.mtime.cn/pi/2019/05/29/083826.86010876_1000X1000.jpg"
+                            mode="aspectFill"
+                          />
+                          <View />
+                          <View className="flex-container">
+                            <View
+                              className="at-article__h3 flex-item-detail"
+                              onClick={this.props.handleTypeItemClick.bind(
+                                this,
+                                index,
+                                this.props.user.id
+                              )}
+                            >
+                              {item}
+                            </View>
+                          </View>
+                        </View>
+                      </View>
+                    )
+                  })}
+                </View>
+              </View>
             </View>
           </View>
         </View>

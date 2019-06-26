@@ -124,7 +124,7 @@ class User extends Component {
           <AtButton
             className="btn"
             type="secondary"
-            onClick={this.props.handleClickItem.bind(this, 1)}
+            onClick={this.props.handleClickItem.bind(this, 3)}
           >
             订单记录
           </AtButton>
