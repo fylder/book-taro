@@ -31,6 +31,7 @@ type PageDispatchProps = {
   handleInfo: () => void
   handleItemClick: () => void
   handleTypeItemClick: () => void
+  handleMoreClick: () => void
   handleqr: () => void
   handleCart: (id: string) => void
   handleHttp: () => void
@@ -69,11 +70,6 @@ interface Index {
     handleTypeItemClick(index: number, id: string) {
       switch (index) {
         case 0:
-          Taro.navigateTo({
-            url: "/pages/user/user"
-          })
-          break
-        case 1:
           if (id) {
             Taro.navigateTo({
               url: "/pages/info/info"
@@ -83,6 +79,11 @@ interface Index {
               url: "/pages/user/user"
             })
           }
+          break
+        case 1:
+          Taro.navigateTo({
+            url: "/pages/user/user"
+          })
           break
         case 2:
           if (id) {
@@ -96,6 +97,11 @@ interface Index {
           }
           break
       }
+    },
+    handleMoreClick() {
+      Taro.navigateTo({
+        url: "/pages/detail/detail?id=1"
+      })
     },
     handleHttp() {
       Taro.request({
@@ -127,17 +133,30 @@ class Index extends Component {
   componentWillReceiveProps(nextProps) {
     console.log(this.props, nextProps)
   }
+
   componentWillMount() {
     this.props.handleLogin()
   }
+
   componentWillUnmount() {}
 
   componentDidShow() {}
 
   componentDidHide() {}
 
+  onShareAppMessage(res) {
+    if (res.from === "button") {
+      // 来自页面内转发按钮
+      console.log(res.target)
+    }
+    return {
+      title: "带着毛驴去兜风",
+      path: "/pages/index/index"
+    }
+  }
+
   render() {
-    const typeArray = ["用户信息", "fylder", "购物车"]
+    const typeArray = ["fylder", "用户信息", "购物车"]
     return (
       <View className="index">
         <View className="lay">
@@ -212,6 +231,20 @@ class Index extends Component {
               </Swiper>
 
               <View className="second_lay">
+                <View className="at-row">
+                  <View className="at-col at-col-10">
+                    <View className="at-row at-row__align--center">
+                      <View className="recent_tag" />
+                      <View className="at-col recent_news">最新影片</View>
+                    </View>
+                  </View>
+                  <View
+                    className="at-col at-col-2 recent_more"
+                    onClick={this.props.handleMoreClick.bind(this)}
+                  >
+                    更多
+                  </View>
+                </View>
                 <View className="at-row at-row--wrap">
                   {typeArray.map((item, index) => {
                     return (

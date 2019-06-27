@@ -110,13 +110,6 @@ class User extends Component {
           <AtButton
             className="btn"
             type="secondary"
-            onClick={this.props.handleClickItem.bind(this, 1)}
-          >
-            编辑信息
-          </AtButton>
-          <AtButton
-            className="btn"
-            type="secondary"
             onClick={this.props.handleClickItem.bind(this, 2)}
           >
             购物车
