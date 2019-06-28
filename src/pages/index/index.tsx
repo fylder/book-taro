@@ -30,11 +30,10 @@ type PageDispatchProps = {
   handleUser: () => void
   handleInfo: () => void
   handleItemClick: () => void
+  handleComicClick: () => void
   handleTypeItemClick: () => void
   handleMoreClick: () => void
-  handleqr: () => void
   handleCart: (id: string) => void
-  handleHttp: () => void
 }
 
 type PageOwnProps = {}
@@ -45,6 +44,14 @@ type IProps = PageStateProps & PageDispatchProps & PageOwnProps
 
 interface Index {
   props: IProps
+}
+interface ComponentProps {
+  /* declare your component's props here */
+}
+interface ComponentState {
+  type: string
+  title: string
+  covers
 }
 
 @connect(
@@ -65,6 +72,11 @@ interface Index {
     handleItemClick(index: number) {
       Taro.navigateTo({
         url: "/pages/detail/detail?id=" + index
+      })
+    },
+    handleComicClick(id: number, title: string) {
+      Taro.navigateTo({
+        url: "/pages/comic/comic?id=" + id + "&title=" + title
       })
     },
     handleTypeItemClick(index: number, id: string) {
@@ -102,23 +114,10 @@ interface Index {
       Taro.navigateTo({
         url: "/pages/detail/detail?id=1"
       })
-    },
-    handleHttp() {
-      Taro.request({
-        url: "https://wechat.fylder.me:8022/api/album/photos",
-        method: "GET"
-        // data: {
-        //   foo: "foo",
-        //   bar: 10
-        // },
-        // header: {
-        //   Authorization: "Bearer 1a03f7c01801f667933a37e1413b4be6622793e5"
-        // }
-      }).then(res => console.log(res.data))
     }
   })
 )
-class Index extends Component {
+class Index extends Component<ComponentProps, ComponentState> {
   /**
    * 指定config的类型声明为: Taro.Config
    *
@@ -136,6 +135,14 @@ class Index extends Component {
 
   componentWillMount() {
     this.props.handleLogin()
+    Taro.request({
+      url: "https://wechat.fylder.me:8022/api/album/",
+      method: "GET"
+    }).then(res =>
+      this.setState({
+        covers: res.data
+      })
+    )
   }
 
   componentWillUnmount() {}
@@ -244,6 +251,34 @@ class Index extends Component {
                   >
                     更多
                   </View>
+                </View>
+                <View className="at-row at-row--wrap">
+                  {this.state.covers.map((item, index) => {
+                    return (
+                      <View className="at-col at-col-6" key={item.id}>
+                        <View className="second_item_lay">
+                          <Image
+                            className="second_item_img"
+                            src={item.cover}
+                            mode="aspectFill"
+                          />
+                          <View />
+                          <View className="flex-container">
+                            <View
+                              className="at-article__h3 flex-item-detail"
+                              onClick={this.props.handleComicClick.bind(
+                                this,
+                                item.id,
+                                item.name
+                              )}
+                            >
+                              {item.name}
+                            </View>
+                          </View>
+                        </View>
+                      </View>
+                    )
+                  })}
                 </View>
                 <View className="at-row at-row--wrap">
                   {typeArray.map((item, index) => {
