@@ -10,7 +10,8 @@
 		"minified": false,
 		"newFeature": true,
 		"autoAudits": false,
-		"checkInvalidKey": true
+		"checkInvalidKey": true,
+		"useCompilerModule": false
 	},
 	"compileType": "miniprogram",
 	"simulatorType": "wechat",
